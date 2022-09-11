@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Console\Commands;
+
+use App\Models\Episodes;
+use App\Models\Series;
+use App\Repositories\ProxerHelper;
+use App\Repositories\UrlBuilder;
+use Goutte\Client;
+use Illuminate\Console\Command;
+
+class AddSeries extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'phproxer:addSeries {id}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Add a new Series to PHProxer identified by Proxer ID';
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $seriesId = $this->argument('id');
+        $urlBuilder = new UrlBuilder();
+        $client = new Client();
+        $proxer = new ProxerHelper($seriesId);
+
+        dump('Adding '.$seriesId.' to phproxer..');
+
+        $name = $proxer->login();
+
+        dump('Logged in as '.$name);
+
+        $episodes = $proxer->getNumberOfEpisodes();
+        $originalTitle = $proxer->getOriginalTitle();
+
+        $serie = Series::create([
+            'TitleEN' => '',
+            'TitleGER' => '',
+            'TitleORG' => $originalTitle,
+            'ProxerId' => $seriesId,
+            'Published'=> true,
+            'Completed' => false,
+            'Episodes' => $episodes,
+        ]);
+        dump($serie->id);
+
+        for ($i = 1; $i <= $episodes; $i++){
+            Episodes::create([
+                'series_id' => $serie->id,
+                'EpisodeId' => $i,
+                'Downloaded' => false,
+                'Retries' => 0,
+            ]);
+        }
+
+        return 0;
+    }
+}
