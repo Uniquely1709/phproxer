@@ -55,7 +55,7 @@ class ProxerHelper
         return $crawler->filter('#uname')->text();
     }
 
-    public function getNumberOfEpisodes():int
+    public function getNumberOfEpisodes():array
     {
         $crawler = $this->client->request('GET', $this->urlBuilder->getSeries($this->seriesId));
         $this->sleep();
@@ -78,7 +78,7 @@ class ProxerHelper
         }
         $lastEpisode = $crawler->filter('tr > td:nth-child(1)')->last()->text();
         dump('last episode is '.$lastEpisode);
-        return $lastEpisode;
+        return ['lastEpisode'=>$lastEpisode];
     }
 
     public function getOriginalTitle():string
@@ -86,6 +86,13 @@ class ProxerHelper
         $crawler = $this->client->request('GET', $this->urlBuilder->getOverview($this->seriesId));
         $this->sleep();
         return $crawler->filter('#main > span > span > span')->text();
+    }
+
+    public function getEnTitle():string
+    {
+        $crawler = $this->client->request('GET', $this->urlBuilder->getOverview($this->seriesId));
+        $this->sleep();
+        return $crawler->filter('#main > span > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(2)')->text();
     }
 
     public function updateSeriesId(int $seriesId):void

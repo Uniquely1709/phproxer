@@ -4,11 +4,9 @@ namespace App\Repositories;
 
 use App\Models\Episodes;
 use Behat\Mink\Element\DocumentElement;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use DMore\ChromeDriver\ChromeDriver;
-use Goutte\Client;
 use Illuminate\Support\Facades\Storage;
 use TwoCaptcha\TwoCaptcha;
 
@@ -62,15 +60,22 @@ class ProxerVideoHelper
         $page->findById('login_submit')->click();
     }
 
-    public function getDownloadUrl(string $url):string|null
+    public function getDownloadUrl(string $url):string|null|bool
     {
         $this->mink->getSession()->visit($url);
         sleep(2);
         $page = $this->mink->getSession()->getPage();
         $this->checkCaptcha($page, $url);
+        if (str_contains($page->getOuterHtml(), 'url(/images/misc/streamfehlt.png)')){
+            dump('stram missing');
+            return false;
+        }
         $iframe = $page->find('css', '#wContainer > tbody > tr:nth-child(3) > td:nth-child(2) > div.wStream > iframe');
         $link = $this->getSrcFromHtml($iframe->getOuterHtml());
-
+        if (!str_contains($link, 'proxer.me')){
+            dump('no proxer link available');
+            return null;
+        }
         $this->mink->getSession()->visit($link);
         sleep(2);
         $page = $this->mink->getSession()->getPage();

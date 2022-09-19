@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignId('series_id')->constrained()->onDelete('cascade');
             $table->integer('EpisodeID');
             $table->string('EpisodeName')->nullable();
-            $table->boolean('Downloaded');
-            $table->boolean('Published')->nullable();
+            $table->boolean('Downloaded')->default(false);
+            $table->boolean('Published')->default(false);
             $table->string('DownloadUrl')->nullable();
             $table->integer('Retries');
             $table->json('res')->nullable();

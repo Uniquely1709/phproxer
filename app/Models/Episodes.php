@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Episodes extends Model
 {
@@ -18,5 +19,10 @@ class Episodes extends Model
     public function serie()
     {
         return $this->belongsTo(Series::class, 'series_id', 'id');
+    }
+
+    public function parent(): HasOne
+    {
+        return $this->hasOne(Series::class, 'id', 'series_id');
     }
 }

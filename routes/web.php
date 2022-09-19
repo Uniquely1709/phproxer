@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\EpisodesController;
+use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +27,6 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/series', [SeriesController::class, 'main'])->name('series');
+    Route::get('/episodes', [EpisodesController::class, 'main'])->name('episodes');
 });

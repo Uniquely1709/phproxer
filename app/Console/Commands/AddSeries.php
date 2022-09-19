@@ -46,6 +46,10 @@ class AddSeries extends Command
         $episodes = $proxer->getNumberOfEpisodes();
         $originalTitle = $proxer->getOriginalTitle();
 
+        //TODO add EN and GER Title
+//        $enTitle = $proxer->getEnTitle();
+//        dd($enTitle);
+
         $serie = Series::create([
             'TitleEN' => '',
             'TitleGER' => '',
@@ -53,11 +57,11 @@ class AddSeries extends Command
             'ProxerId' => $seriesId,
             'Published'=> true,
             'Completed' => false,
-            'Episodes' => $episodes,
+            'Episodes' => $episodes['lastEpisode'],
         ]);
         dump($serie->id);
 
-        for ($i = 1; $i <= $episodes; $i++){
+        for ($i = 1; $i <= $episodes['lastEpisode']; $i++){
             Episodes::create([
                 'series_id' => $serie->id,
                 'EpisodeId' => $i,
@@ -65,6 +69,9 @@ class AddSeries extends Command
                 'Retries' => 0,
             ]);
         }
+
+        $serie->Scraped = true;
+        $serie->save();
 
         return 0;
     }

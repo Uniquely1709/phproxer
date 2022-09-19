@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('TitleGER')->nullable();
             $table->integer('ProxerId')->unique();
             $table->integer('Episodes');
-            $table->boolean('Completed');
+            $table->boolean('Completed')->default(false);
+            $table->boolean('Scraped')->default(false);
+            $table->boolean('Downloaded')->default(false);
             $table->json('res')->nullable();
         });
     }
