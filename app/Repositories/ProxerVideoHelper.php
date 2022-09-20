@@ -67,7 +67,7 @@ class ProxerVideoHelper
         $page = $this->mink->getSession()->getPage();
         $this->checkCaptcha($page, $url);
         if (str_contains($page->getOuterHtml(), 'url(/images/misc/streamfehlt.png)')){
-            dump('stram missing');
+            dump('stream missing');
             return false;
         }
         $iframe = $page->find('css', '#wContainer > tbody > tr:nth-child(3) > td:nth-child(2) > div.wStream > iframe');
@@ -82,6 +82,20 @@ class ProxerVideoHelper
         $source = $page->find('css', '#plyr');
 
         return $this->getSrcFromHtml($source->getHtml());
+    }
+
+    public function checkEpisodeReleased(string $url):bool
+    {
+        $this->mink->getSession()->visit($url);
+        sleep(2);
+        $page = $this->mink->getSession()->getPage();
+        $this->checkCaptcha($page, $url);
+        if (str_contains($page->getOuterHtml(), 'url(/images/misc/streamfehlt.png)')){
+            dump('stream missing');
+            return false;
+        }else{
+            return true;
+        }
     }
 
     public function checkCaptcha(DocumentElement $page, string $url)

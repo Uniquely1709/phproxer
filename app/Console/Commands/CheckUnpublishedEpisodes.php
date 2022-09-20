@@ -46,7 +46,11 @@ class CheckUnpublishedEpisodes extends Command
             $seriesId = $open->serie()->first()->ProxerId;
             $url = $urlBuilder->getEpisodeId($seriesId, $episodeId);
             dump($url);
-
+            $released = $proxer->checkEpisodeReleased($url);
+            dump('Episode '.$episodeId.' from '.$seriesId.' is released '.$released);
+            $open->update([
+                'Published'=>$released,
+            ]);
         }
         return 0;
     }
