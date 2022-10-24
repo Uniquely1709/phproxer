@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\Episodes;
 use App\Models\Series;
+use App\Notifications\SendTelegram;
 use App\Repositories\ProxerHelper;
 use App\Repositories\ProxerVideoHelper;
 use App\Repositories\UrlBuilder;
@@ -12,6 +13,8 @@ use Illuminate\Console\Command;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use DMore\ChromeDriver\ChromeDriver;
+use Illuminate\Support\Facades\Notification;
+use NotificationChannels\Telegram\TelegramMessage;
 
 class test extends Command
 {
@@ -36,6 +39,7 @@ class test extends Command
      */
     public function handle()
     {
+        Notification::send('',new SendTelegram('pimmel'));
 //        $client = new Client();
 //        $url = 'https://proxer.me/';
 //        $lastEpisode = null;
@@ -79,26 +83,26 @@ class test extends Command
 
 //        $crawler = $client->request('GET', "https://proxer.me/info/74/details#top");
 //        dump($titleOrg);
-        $id = 3;
-        $episode = Episodes::where('id', $id)->first();
-        $seriesId = $episode->serie()->first()->ProxerId;
+//        $id = 3;
+//        $episode = Episodes::where('id', $id)->first();
+//        $seriesId = $episode->serie()->first()->ProxerId;
+////
+//        $urlBuilder = new UrlBuilder();
+////        $client = new Client();
+////        $proxer = new ProxerHelper($seriesId);
+////
+////        $name = $proxer->login();
+////
+////        dump('Logged in as '.$name);
+////
+//        $url = $urlBuilder->getEpisodeId($seriesId, $id);
+////
+////        dump($proxer->getVideoUrl($urlBuilder->getEpisodeId($seriesId, $id)));
 //
-        $urlBuilder = new UrlBuilder();
-//        $client = new Client();
-//        $proxer = new ProxerHelper($seriesId);
-//
-//        $name = $proxer->login();
-//
-//        dump('Logged in as '.$name);
-//
-        $url = $urlBuilder->getEpisodeId($seriesId, $id);
-//
-//        dump($proxer->getVideoUrl($urlBuilder->getEpisodeId($seriesId, $id)));
-
-        $video = new ProxerVideoHelper();
-        $video->login();
-        $video->downloadEpisode($url, $seriesId, $episode);
-        return 0;
+//        $video = new ProxerVideoHelper();
+//        $video->login();
+//        $video->downloadEpisode($url, $seriesId, $episode);
+//        return 0;
     }
 }
 #box-table-a > tbody > tr:nth-child(13) > td:nth-child(1)

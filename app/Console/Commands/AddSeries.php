@@ -66,6 +66,7 @@ class AddSeries extends Command
                 'series_id' => $serie->id,
                 'EpisodeId' => $i,
                 'Downloaded' => false,
+                'Published'=> false,
                 'Retries' => 0,
             ]);
         }

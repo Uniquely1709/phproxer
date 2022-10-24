@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AddSeriesController;
 use App\Http\Controllers\EpisodesController;
 use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::middleware([
     'auth:sanctum',
@@ -27,6 +25,10 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name('welcome');
     Route::get('/series', [SeriesController::class, 'main'])->name('series');
     Route::get('/episodes', [EpisodesController::class, 'main'])->name('episodes');
+    Route::post('/add-series', [AddSeriesController::class, 'main'])->name('add-series');
 });

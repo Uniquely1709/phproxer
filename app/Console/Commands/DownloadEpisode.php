@@ -3,11 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Episodes;
-use App\Repositories\ProxerHelper;
-use App\Repositories\ProxerVideoHelper;
-use App\Repositories\UrlBuilder;
-use Goutte\Client;
+use App\Models\Series;
+use App\Repositories\ToolsHelper;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 
 class DownloadEpisode extends Command
 {
@@ -16,7 +15,7 @@ class DownloadEpisode extends Command
      *
      * @var string
      */
-    protected $signature = 'phproxer:downloadEpisode {id}';
+    protected $signature = 'phproxer:downloadEpisode {id} {--queue=downloads}';
 
     /**
      * The console command description.
@@ -35,17 +34,33 @@ class DownloadEpisode extends Command
         $id = $this->argument('id');
 
         $episode = Episodes::where('id', $id)->first();
-        $seriesId = $episode->serie()->first()->ProxerId;
+        $series = Series::where('id', $episode->series_id)->first();
 
-        $urlBuilder = new UrlBuilder();
 
-        $url = $urlBuilder->getEpisodeId($seriesId, $id);
+        $episodePath = ToolsHelper::nameBuilder($series->ProxerId, $episode);
 
-        $video = new ProxerVideoHelper();
-        $video->login();
-        if(!$video->downloadEpisode($url, $seriesId, $episode)){
+        $vid = file_get_contents($episode->DownloadUrl);
+
+        $state = Storage::disk('phproxer')->put(ToolsHelper::pathBuilder($series->ProxerId, $episodePath),$vid);
+
+        if(!$state){
             $episode->update(['Retries'=>$episode->Retries+1]);
+        }else{
+            $episode->update(['Downloaded' => true]);
         }
+//        $seriesId = $episode->serie()->first()->ProxerId;
+//
+//        $urlBuilder = new UrlBuilder();
+//
+//        $url = $urlBuilder->getEpisodeId($seriesId, $id);
+//
+//        $video = new ProxerVideoHelper();
+//        $video->login();
+//        if(!$video->downloadEpisode($url, $seriesId, $episode)){
+//            $episode->update(['Retries'=>$episode->Retries+1]);
+//        }else{
+//            $episode->update(['Downloaded' => true]);
+//        }
         return 0;
     }
 }

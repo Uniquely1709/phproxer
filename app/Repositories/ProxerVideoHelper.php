@@ -140,7 +140,7 @@ class ProxerVideoHelper
         return preg_replace('/\s+/', '', $result[1][0]);
     }
 
-    public function downloadEpisode(string $url, int $series, Episodes $episode):bool
+    public function alternativeDownloadEpisode(string $url, int $series, Episodes $episode):bool
     {
         $this->mink->getSession()->visit($url);
         $page = $this->mink->getSession()->getPage();

@@ -9,7 +9,9 @@ class ToolsHelper
 {
     public static function pathBuilder(string $folder, string $filename):string
     {
+        dump($folder);
         $series = Series::where('ProxerId', $folder)->first();
+        dump($series);
         return sprintf(
             '%1$s%2$s%3$s',
             $series->TitleORG,
