@@ -168,7 +168,7 @@ class ProxerVideoHelper
 
         $vid = file_get_contents($url);
 
-        return Storage::disk('phproxer')->put(ToolsHelper::pathBuilder($series, $episodePath),$vid);
+        return Storage::disk('minio')->put(ToolsHelper::pathBuilder($series, $episodePath),$vid);
 
     }
 }
