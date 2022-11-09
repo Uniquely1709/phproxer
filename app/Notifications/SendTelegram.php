@@ -13,15 +13,17 @@ class SendTelegram extends Notification
     use Queueable;
 
     private string $message;
+    private string $group;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(string $message)
+    public function __construct(string $message, string $group)
     {
         $this->message = $message;
+        $this->group = $group;
     }
 
     /**
@@ -43,7 +45,7 @@ class SendTelegram extends Notification
      */
     public function toTelegram($notifiable)
     {
-        return TelegramMessage::create()->to(env('TELEGRAM_GROUP',''))->content($this->message);
+        return TelegramMessage::create()->to($this->group)->content($this->message);
     }
 
     /**
