@@ -41,7 +41,6 @@ class test extends Command
     {
 //        $files = \Storage::disk('minio')->allFiles();
 //        dump($files);
-        $group = env('TELEGRAM_GROUP','');
-        Notification::send('', new SendTelegram('test', $group));
+        Notification::send('', new SendTelegram('test'));
     }
 }

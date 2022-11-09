@@ -20,10 +20,11 @@ class SendTelegram extends Notification
      *
      * @return void
      */
-    public function __construct(string $message, string $group)
+    public function __construct(string $message)
     {
         $this->message = $message;
-        $this->group = $group;
+        $this->group = config('phproxer.telegram_group');
+
     }
 
     /**
