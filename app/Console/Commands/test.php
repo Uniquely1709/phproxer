@@ -41,6 +41,7 @@ class test extends Command
     {
 //        $files = \Storage::disk('minio')->allFiles();
 //        dump($files);
+        Notification::send('',new SendTelegram('test'));
 //        $client = new Client();
 //        $url = 'https://proxer.me/';
 //        $lastEpisode = null;
