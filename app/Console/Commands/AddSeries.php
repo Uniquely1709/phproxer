@@ -75,7 +75,7 @@ class AddSeries extends Command
 
         $serie->Scraped = true;
         $serie->save();
-        Notification::send('',new SendTelegram('Added Series '.$serie->TitleORG));
+        Notification::send('',new SendTelegram('Added Series "'.$serie->TitleORG.'"'));
 
         return 0;
     }

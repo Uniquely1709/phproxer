@@ -49,7 +49,7 @@ class DownloadEpisode extends Command
             $episode->update(['Retries'=>$episode->Retries+1]);
         }else{
             $episode->update(['Downloaded' => true]);
-            Notification::send('',new SendTelegram('Downloaded Episode '.$episode->EpisodeID.' from '.$series->TitleORG));
+            Notification::send('',new SendTelegram('Downloaded Episode '.$episode->EpisodeID.' from "'.$series->TitleORG.'"'));
 
         }
 //        $seriesId = $episode->serie()->first()->ProxerId;
