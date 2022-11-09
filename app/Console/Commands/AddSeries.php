@@ -4,10 +4,12 @@ namespace App\Console\Commands;
 
 use App\Models\Episodes;
 use App\Models\Series;
+use App\Notifications\SendTelegram;
 use App\Repositories\ProxerHelper;
 use App\Repositories\UrlBuilder;
 use Goutte\Client;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 
 class AddSeries extends Command
 {
@@ -73,6 +75,7 @@ class AddSeries extends Command
 
         $serie->Scraped = true;
         $serie->save();
+        Notification::send('',new SendTelegram('Added Series '.$serie->TitleORG));
 
         return 0;
     }

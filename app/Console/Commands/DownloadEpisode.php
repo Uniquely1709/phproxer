@@ -4,8 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\Episodes;
 use App\Models\Series;
+use App\Notifications\SendTelegram;
 use App\Repositories\ToolsHelper;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 
 class DownloadEpisode extends Command
@@ -47,6 +49,8 @@ class DownloadEpisode extends Command
             $episode->update(['Retries'=>$episode->Retries+1]);
         }else{
             $episode->update(['Downloaded' => true]);
+            Notification::send('',new SendTelegram('Downloaded Episode '.$episode->EpisodeID.' from '.$series->TitleORG));
+
         }
 //        $seriesId = $episode->serie()->first()->ProxerId;
 //

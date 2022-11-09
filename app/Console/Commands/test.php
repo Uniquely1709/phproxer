@@ -39,9 +39,8 @@ class test extends Command
      */
     public function handle()
     {
-        $files = \Storage::disk('minio')->allFiles();
-        dump($files);
-//        Notification::send('',new SendTelegram('pimmel'));
+//        $files = \Storage::disk('minio')->allFiles();
+//        dump($files);
 //        $client = new Client();
 //        $url = 'https://proxer.me/';
 //        $lastEpisode = null;
