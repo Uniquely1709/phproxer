@@ -7,7 +7,6 @@ use App\Console\Commands\CollectOpenDownloadUrls;
 use App\Console\Commands\DownloadAll;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use function Deployer\download;
 
 class Kernel extends ConsoleKernel
 {
@@ -19,9 +18,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//         $schedule->command('inspire')->hourly();
         $schedule->command(CheckUnpublishedEpisodes::class)->dailyAt('12:00');
-        $schedule->command(CollectOpenDownloadUrls::class)->dailyAt('13:00');
+        $schedule->command(CollectOpenDownloadUrls::class)->hourly();
         $schedule->command(DownloadAll::class)->dailyAt('14:00');
     }
 
