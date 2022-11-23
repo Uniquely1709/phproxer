@@ -56,7 +56,6 @@ class ProxerVideoHelper
         $password = $page->findField('login_password');
         $user->setValue($this->username);
         $password->setValue($this->password);
-
         $page->findById('login_submit')->click();
     }
 
@@ -79,8 +78,18 @@ class ProxerVideoHelper
         $this->mink->getSession()->visit($link);
         sleep(2);
         $page = $this->mink->getSession()->getPage();
-        $source = $page->find('css', '#plyr');
+        // differentiate between old and new proxer links
+        // old = https://stream.proxer.me/embed-y6gb2lniche6-728x504.html?title=Shingeki%20no%20Kyojin%20Episode%201%20EngSub&ref=/watch/5840/1/engsub
+        // new = https://stream-service.proxer.me/embed-fnhzvuowomtc.html?plyr-compiled
+        // the player id will differentiate
+        if (str_contains($link, "stream-service.proxer.me")){
+            //new links
+            $source = $page->find('css', '#player');
+        }else{
+            //old links
+            $source = $page->find('css', '#plyr');
 
+        }
         return $this->getSrcFromHtml($source->getHtml());
     }
 
