@@ -34,7 +34,7 @@ class CheckUnpublishedEpisodes extends Command
         Logger::debug('Started CheckUnpublishedEpisodes Command');
 
         $episodeId = $this->argument('episodeId');
-        if (is_null($episodeId)){
+        if ($episodeId > 1){
             Logger::debug('Getting all unpublished Episodes...');
             $opens = Episodes::query()
                 ->where('Downloaded', false)
