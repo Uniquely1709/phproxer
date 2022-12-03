@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Episodes;
+use App\Repositories\Logger;
 use App\Repositories\ProxerVideoHelper;
 use App\Repositories\UrlBuilder;
 use Illuminate\Console\Command;
@@ -14,7 +15,7 @@ class CheckUnpublishedEpisodes extends Command
      *
      * @var string
      */
-    protected $signature = 'phproxer:checkUnpublishedEpisodes';
+    protected $signature = 'phproxer:checkUnpublishedEpisodes {episodeId=null}';
 
     /**
      * The console command description.
@@ -30,28 +31,38 @@ class CheckUnpublishedEpisodes extends Command
      */
     public function handle()
     {
-        $opens = Episodes::where('Downloaded', false)
-            ->where('DownloadUrl', null)
-            ->where('Retries', '<=', 5)
-            ->where('Published', false)
-            ->get();
+        Logger::debug('Started CheckUnpublishedEpisodes Command');
+
+        $episodeId = $this->argument('episodeId');
+        if (is_null($episodeId)){
+            Logger::debug('Getting all unpublished Episodes...');
+            $opens = Episodes::query()
+                ->where('Downloaded', false)
+                ->where('DownloadUrl', null)
+                ->where('Retries', '<=', 5)
+                ->where('Published', false)
+                ->get();
+        }else{
+            Logger::debug('Checking only episode id '.$episodeId.' provided by command call');
+            $opens = Episodes::query()
+                ->where('id', $episodeId)
+                ->get();
+        }
 
         $proxer = new ProxerVideoHelper();
         $urlBuilder = new UrlBuilder();
         $proxer->login();
+
         foreach ($opens as $open) {
-            dump($open->EpisodeID);
-            dump($open->serie()->first()->ProxerId);
             $episodeId = $open->EpisodeID;
             $seriesId = $open->serie()->first()->ProxerId;
             $url = $urlBuilder->getEpisodeId($seriesId, $episodeId);
-            dump($url);
             $released = $proxer->checkEpisodeReleased($url);
-            dump('Episode '.$episodeId.' from '.$seriesId.' is released '.$released);
             $open->update([
                 'Published'=>$released,
             ]);
         }
-        return 0;
+        Logger::debug('Finished CheckUnpublishedEpisodes Command');
+        return self::SUCCESS;
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AddSeriesController;
 use App\Http\Controllers\EpisodesController;
+use App\Http\Controllers\LogsController;
 use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +31,6 @@ Route::middleware([
     })->name('welcome');
     Route::get('/series', [SeriesController::class, 'main'])->name('series');
     Route::get('/episodes', [EpisodesController::class, 'main'])->name('episodes');
+    Route::get('/logs', [LogsController::class, 'main'])->name('logs');
     Route::post('/add-series', [AddSeriesController::class, 'main'])->name('add-series');
 });

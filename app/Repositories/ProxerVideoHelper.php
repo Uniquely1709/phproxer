@@ -100,9 +100,10 @@ class ProxerVideoHelper
         $page = $this->mink->getSession()->getPage();
         $this->checkCaptcha($page, $url);
         if (str_contains($page->getOuterHtml(), 'url(/images/misc/streamfehlt.png)')){
-            dump('stream missing');
+            Logger::info('Episode is not yet released '.$url);
             return false;
         }else{
+            Logger::info('Episode IS now released '.$url);
             return true;
         }
     }

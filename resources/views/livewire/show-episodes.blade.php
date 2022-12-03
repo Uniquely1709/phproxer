@@ -27,6 +27,9 @@
             <th class="text-left p-2">
                 Downloadurl
             </th>
+            <th class="text-left p-2">
+                Refresh
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -67,6 +70,14 @@
                     @if($episode->Retries > 5)
                         <x-heroicon-o-x-mark  style="max-height: 25px; color: red"/>
                     @endif
+                </td>
+                <td class="p-2">
+{{--                    <a href="{{route('force-check', ['id'=>$episode->id, 'series'=>$series])}}">--}}
+{{--                        <x-heroicon-s-arrow-path style="max-height: 25px" />--}}
+{{--                    </a>--}}
+                    <button type="button" wire:click="forceCheck({{$episode->Downloaded}}, {{$episode->id}})" class="btn btn-default">
+                        check
+                    </button>
                 </td>
             </tr>
         @endforeach

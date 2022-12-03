@@ -13,6 +13,7 @@
         "dmore/chrome-mink-driver": "^2.8",
         "fabpot/goutte": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
+        "jantinnerezo/livewire-alert": "^2.2",
         "laravel-notification-channels/telegram": "^2.1",
         "laravel/framework": "^9.19",
         "laravel/jetstream": "^2.12",
