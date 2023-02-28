@@ -13,7 +13,8 @@ class ToolsHelper
         $series = Series::where('ProxerId', $folder)->first();
         dump($series);
         return sprintf(
-            '%1$s%2$s%3$s',
+            '%1$s%2$s%3$s%4$s',
+            '/anime/',
             $series->TitleORG,
             '/',
             $filename,
