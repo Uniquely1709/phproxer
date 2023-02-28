@@ -60,6 +60,16 @@ return [
             'endpoint' => env('MINIO_ENDPOINT'),
             'use_path_style_endpoint' => true,
         ],
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('SFTP_HOST'),
+            'port' => intval(env('SFTP_PORT')),
+            'username' => env('SFTP_USER'),
+//            'password' => env('SFTP_PASSWORD'),
+            'privateKey' => env('SFTP_PRIVATE_KEY'),
+            'passphrase' => env('SFTP_PASSPHRASE'),
+
+        ],
         's3-video' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

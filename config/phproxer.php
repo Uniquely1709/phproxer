@@ -6,4 +6,5 @@ return [
     'proxer_2captcha_api' => env('CAPTCHA_API'),
     'telegram_token' => env('TELEGRAM_BOT_TOKEN'),
     'telegram_group' => env('TELEGRAM_GROUP'),
+    'proxer_storage' => env('PROXER_STORAGE_DISK')
 ];

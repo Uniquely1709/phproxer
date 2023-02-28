@@ -24,7 +24,6 @@ class SendTelegram extends Notification
     {
         $this->message = $message;
         $this->group = config('phproxer.telegram_group');
-
     }
 
     /**

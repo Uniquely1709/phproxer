@@ -20,7 +20,9 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "livewire/livewire": "^2.5"
+        "league/flysystem-sftp-v3": "^3.10",
+        "livewire/livewire": "^2.5",
+        "spresnac/laravel-create-user-cli": "^1.0"
     },
     "require-dev": {
         "deployer/deployer": "^7.0",
