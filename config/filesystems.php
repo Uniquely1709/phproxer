@@ -68,6 +68,8 @@ return [
 //            'password' => env('SFTP_PASSWORD'),
             'privateKey' => env('SFTP_PRIVATE_KEY'),
             'passphrase' => env('SFTP_PASSPHRASE'),
+            'visibility' => 'public',
+            'permPublic' => 0766,
 
         ],
         's3-video' => [
