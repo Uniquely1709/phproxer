@@ -15,17 +15,11 @@ class LogWire extends Component
     public function render()
     {
         $entries = LogEntry::orderBy('created_at', 'desc')
-            ->when($this->level, function ($query, $level){
-                return $query->where('Level',$level);
-            })->when($this->message, function ($query, $message){
-                return $query->where('Entry','like','%'.$message.'%');
-            })
+            ->when($this->level, fn ($query, $level) => $query->where('Level', $level))->when($this->message, fn ($query, $message) => $query->where('Entry', 'like', '%'.$message.'%'))
             ->paginate(50);
 
-        return view('livewire.log-wire',[
+        return view('livewire.log-wire', [
             'entries'=>$entries,
         ]);
     }
-
-
 }

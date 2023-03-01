@@ -22,13 +22,9 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    Route::get('/', function () {
-        return view('dashboard');
-    })->name('welcome');
+])->group(function (): void {
+    Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
+    Route::get('/', fn () => view('dashboard'))->name('welcome');
     Route::get('/series', [SeriesController::class, 'main'])->name('series');
     Route::get('/episodes', [EpisodesController::class, 'main'])->name('episodes');
     Route::get('/logs', [LogsController::class, 'main'])->name('logs');

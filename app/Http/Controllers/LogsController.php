@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class LogsController extends Controller
 {
-    public function main (Request $request){
+    public function main(Request $request)
+    {
         $level = $request->get('level');
-        return view('logviewer',[
+        return view(
+            'logviewer',
+            [
                 'user_name' => Auth::user()->name,
                 'level' =>$level,
             ]

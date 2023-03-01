@@ -43,14 +43,13 @@ class DownloadEpisode extends Command
 
         $vid = file_get_contents($episode->DownloadUrl);
 
-        $state = Storage::disk(config('phproxer.proxer_storage'))->put(ToolsHelper::pathBuilder($series->ProxerId, $episodePath),$vid);
+        $state = Storage::disk(config('phproxer.proxer_storage'))->put(ToolsHelper::pathBuilder($series->ProxerId, $episodePath), $vid);
 
-        if(!$state){
+        if ( ! $state) {
             $episode->update(['Retries'=>$episode->Retries+1]);
-        }else{
+        } else {
             $episode->update(['Downloaded' => true]);
-            Notification::send('',new SendTelegram('Downloaded Episode '.$episode->EpisodeID.' from "'.$series->TitleORG.'"'));
-
+            Notification::send('', new SendTelegram('Downloaded Episode '.$episode->EpisodeID.' from "'.$series->TitleORG.'"'));
         }
 //        $seriesId = $episode->serie()->first()->ProxerId;
 //

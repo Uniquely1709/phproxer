@@ -9,7 +9,7 @@ class UrlBuilder
     private string $seriesDetails = '/details#top';
     private string $enSub = 'engsub';
 
-    public function getSeries(int $seriesId):string
+    public function getSeries(int $seriesId): string
     {
         return sprintf(
             '%1$s%2$s%3$s%4$s',
@@ -20,7 +20,7 @@ class UrlBuilder
         );
     }
 
-    public function getOverview(int $seriesId):string
+    public function getOverview(int $seriesId): string
     {
         return sprintf(
             '%1$s%2$s%3$s%4$s',
@@ -31,7 +31,7 @@ class UrlBuilder
         );
     }
 
-    public function getEpisodeId(int $seriesId, int $episodeId):string
+    public function getEpisodeId(int $seriesId, int $episodeId): string
     {
         return sprintf(
             '%1$s%2$s%3$s%4$s%5$s',
@@ -43,7 +43,7 @@ class UrlBuilder
         );
     }
 
-    public function baseUrl():string
+    public function baseUrl(): string
     {
         return $this->baseUrl;
     }

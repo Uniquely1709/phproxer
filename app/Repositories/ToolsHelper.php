@@ -7,7 +7,7 @@ use App\Models\Series;
 
 class ToolsHelper
 {
-    public static function pathBuilder(string $folder, string $filename):string
+    public static function pathBuilder(string $folder, string $filename): string
     {
         dump($folder);
         $series = Series::where('ProxerId', $folder)->first();
@@ -21,7 +21,7 @@ class ToolsHelper
         );
     }
 
-    public static function nameBuilder(int $seriesId, Episodes $episode):string
+    public static function nameBuilder(int $seriesId, Episodes $episode): string
     {
         $series = Series::where('ProxerId', $seriesId)->first();
 

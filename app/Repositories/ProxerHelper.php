@@ -18,11 +18,11 @@ class ProxerHelper
         $this->client = new Client();
 
         $username = config('phproxer.proxer_username');
-        if ($username == null){
+        if (null === $username) {
             die('No valid proxer username');
         }
         $password = config('phproxer.proxer_password');
-        if ($password == null){
+        if (null === $password) {
             die('No valid proxer username');
         }
         $this->username = $username;
@@ -30,11 +30,12 @@ class ProxerHelper
         $this->seriesId = $seriesId;
     }
 
-    private function sleep(){
+    private function sleep(): void
+    {
         sleep(2);
     }
 
-    public function login():string|null
+    public function login(): string|null
     {
         $crawler = $this->client->request('GET', $this->urlBuilder->baseUrl());
         $this->sleep();
@@ -55,20 +56,18 @@ class ProxerHelper
         return $crawler->filter('#uname')->text();
     }
 
-    public function getNumberOfEpisodes():array
+    public function getNumberOfEpisodes(): array
     {
         $crawler = $this->client->request('GET', $this->urlBuilder->getSeries($this->seriesId));
         $this->sleep();
 
         dump('check if page navigation exists..');
 
-        $data = $crawler->filter('#contentList > p:nth-child(1) > a.menu.active')->each(function ($node){
-            return $node;
-        });
+        $data = $crawler->filter('#contentList > p:nth-child(1) > a.menu.active')->each(fn ($node) => $node);
 
-        if(empty($data)){
+        if (empty($data)) {
             dump('navigation does not exits');
-        }else{
+        } else {
             dump('navigation exists');
             dump('getting last page');
             $lastPage = $crawler->filter('#contentList > p:nth-child(1) > a')->last()->text();
@@ -81,31 +80,29 @@ class ProxerHelper
         return ['lastEpisode'=>$lastEpisode];
     }
 
-    public function getOriginalTitle():string
+    public function getOriginalTitle(): string
     {
         $crawler = $this->client->request('GET', $this->urlBuilder->getOverview($this->seriesId));
         $this->sleep();
         return $crawler->filter('#main > span > span > span')->text();
     }
 
-    public function getEnTitle():string
+    public function getEnTitle(): string
     {
         $crawler = $this->client->request('GET', $this->urlBuilder->getOverview($this->seriesId));
         $this->sleep();
         return $crawler->filter('#main > span > table > tbody > tr > td:nth-child(2) > table > tbody > tr:nth-child(2) > td:nth-child(2)')->text();
     }
 
-    public function updateSeriesId(int $seriesId):void
+    public function updateSeriesId(int $seriesId): void
     {
         $this->seriesId = $seriesId;
     }
 
-    public function getVideoUrl(string $episodeUrl):string
+    public function getVideoUrl(string $episodeUrl): string
     {
         $crawler = $this->client->request('GET', $episodeUrl);
         $this->sleep();
         return $crawler->filter('#wContainer')->text();
     }
-
-
 }

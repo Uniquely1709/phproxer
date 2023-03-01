@@ -34,7 +34,7 @@ class CheckUnpublishedEpisodes extends Command
         Logger::debug('Started CheckUnpublishedEpisodes Command');
 
         $episodeId = $this->argument('episodeId');
-        if ($episodeId > 1){
+        if ($episodeId > 1) {
             Logger::debug('Getting all unpublished Episodes...');
             $opens = Episodes::query()
                 ->where('Downloaded', false)
@@ -42,7 +42,7 @@ class CheckUnpublishedEpisodes extends Command
                 ->where('Retries', '<=', 5)
                 ->where('Published', false)
                 ->get();
-        }else{
+        } else {
             Logger::debug('Checking only episode id '.$episodeId.' provided by command call');
             $opens = Episodes::query()
                 ->where('id', $episodeId)
