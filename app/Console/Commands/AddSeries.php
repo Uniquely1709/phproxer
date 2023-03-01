@@ -18,7 +18,7 @@ class AddSeries extends Command
      *
      * @var string
      */
-    protected $signature = 'phproxer:addSeries {id}';
+    protected $signature = 'phproxer:addSeries {id} {season} {title?}';
 
     /**
      * The console command description.
@@ -35,6 +35,9 @@ class AddSeries extends Command
     public function handle()
     {
         $seriesId = $this->argument('id');
+        $title = $this->argument('title');
+        $season = $this->argument('season');
+
         $urlBuilder = new UrlBuilder();
         $client = new Client();
         $proxer = new ProxerHelper($seriesId);
@@ -60,6 +63,8 @@ class AddSeries extends Command
             'Published'=> true,
             'Completed' => false,
             'Episodes' => $episodes['lastEpisode'],
+            'Title' => $title,
+            'Season' => $season
         ]);
         dump($serie->id);
 

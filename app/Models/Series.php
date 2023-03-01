@@ -12,7 +12,7 @@ class Series extends Model
     protected $table = 'series';
 
     public $fillable = [
-        'TitleEN','TitleORG', 'TitleGER', 'ProxerId', 'Completed', 'Episodes', 'Scraped', 'Downloaded',  'res',
+        'TitleEN','TitleORG', 'TitleGER', 'ProxerId', 'Completed', 'Episodes', 'Scraped', 'Downloaded',  'res', 'Title', 'Season'
     ];
 
     public function episodes()
