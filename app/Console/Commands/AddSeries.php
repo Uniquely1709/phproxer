@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Models\Episodes;
 use App\Models\Series;
 use App\Notifications\SendTelegram;
-use App\Repositories\ProxerHelper;
+use App\Repositories\ProxerVideoHelper;
 use App\Repositories\UrlBuilder;
 use Goutte\Client;
 use Illuminate\Console\Command;
@@ -40,16 +40,13 @@ class AddSeries extends Command
 
         $urlBuilder = new UrlBuilder();
         $client = new Client();
-        $proxer = new ProxerHelper($seriesId);
+        $proxer = new ProxerVideoHelper();
 
         dump('Adding '.$seriesId.' to phproxer..');
 
-        $name = $proxer->login();
-
-        dump('Logged in as '.$name);
-
-        $episodes = $proxer->getNumberOfEpisodes();
-        $originalTitle = $proxer->getOriginalTitle();
+        $proxer->login();
+        $episodes = $proxer->getNumberOfEpisodes($seriesId);
+//        $originalTitle = $proxer->getOriginalTitle();
 
         //TODO add EN and GER Title
 //        $enTitle = $proxer->getEnTitle();
@@ -58,17 +55,17 @@ class AddSeries extends Command
         $serie = Series::create([
             'TitleEN' => '',
             'TitleGER' => '',
-            'TitleORG' => $originalTitle,
+            'TitleORG' => '',
             'ProxerId' => $seriesId,
             'Published'=> true,
             'Completed' => false,
-            'Episodes' => $episodes['lastEpisode'],
+            'Episodes' => $episodes,
             'Title' => $title,
             'Season' => $season
         ]);
         dump($serie->id);
 
-        for ($i = 1; $i <= $episodes['lastEpisode']; $i++) {
+        for ($i = 1; $i <= $episodes; $i++) {
             $episode = Episodes::create([
                 'series_id' => $serie->id,
                 'EpisodeId' => $i,
