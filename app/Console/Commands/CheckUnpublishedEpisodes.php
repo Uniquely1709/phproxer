@@ -50,9 +50,6 @@ class CheckUnpublishedEpisodes extends Command
                 ->get();
         }
 
-        $proxer = new ProxerVideoHelper();
-        $urlBuilder = new UrlBuilder();
-        $proxer->login();
         foreach ($opens as $open) {
             $this->checkEpisode($open, $recursive);
         }
@@ -64,6 +61,7 @@ class CheckUnpublishedEpisodes extends Command
     {
         $proxer = new ProxerVideoHelper();
         $urlBuilder = new UrlBuilder();
+        $proxer->login();
 
 
         $episodeId = $episode->EpisodeID;
