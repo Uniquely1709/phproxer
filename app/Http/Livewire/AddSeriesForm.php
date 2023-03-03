@@ -29,6 +29,10 @@ class AddSeriesForm extends Component
 
         //todo move to async queue
         Artisan::queue('phproxer:addSeries', ['id'=>$seriesAttributes['seriesId'], 'season' => $seriesAttributes['season'], 'title' => $seriesAttributes['title']]);
+        Artisan::queue('phproxer:checkUnpublishedEpisodes');
+        Artisan::queue('phproxer:collectOpenDownloadUrls');
+        Artisan::queue('phproxer:download');
+        Artisan::queue('phproxer:updateSeries');
     }
 
     public function clearMessageBox(): void
