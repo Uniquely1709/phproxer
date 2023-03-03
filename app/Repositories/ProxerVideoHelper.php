@@ -59,6 +59,30 @@ class ProxerVideoHelper
         $page->findById('login_submit')->click();
     }
 
+    public function getNumberOfEpisodes(int $seriesId): int
+    {
+        $url = $this->urlBuilder->getSeries($seriesId);
+        $this->mink->getSession()->visit($url);
+        sleep(2);
+
+        $page = $this->mink->getSession()->getPage();
+        $this->checkCaptcha($page, $url);
+
+        dump('check if page navigation exists..');
+        $nav = $page->find('css', '#contentList > p:nth-child(1) > a.menu.active');
+        if (null === $nav) {
+            dump('navigation does not exits');
+        } else {
+            dump('navigation exists');
+            dump('getting last page');
+            $elements = $page->findAll('css', '#contentList > p:nth-child(1) > a');
+            end($elements)->click();
+            sleep(5);
+        }
+        $rows = $page->findAll('css', 'tbody > tr > td:nth-child(1)');
+        return end($rows)->getHtml();
+    }
+
     public function getDownloadUrl(string $url): string|null|bool
     {
         $this->mink->getSession()->visit($url);
