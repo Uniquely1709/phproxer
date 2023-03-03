@@ -30,9 +30,9 @@ class UpdateSeries extends Command
     {
         $series  = Series::where('Completed', false)->get();
 
-        foreach ($series as $serie){
+        foreach ($series as $serie) {
             $episodes = $serie->episodes()->get();
-            if(!$episodes->contains('Downloaded', false)){
+            if ( ! $episodes->contains('Downloaded', false)) {
                 $serie->update(['Downloaded' => true]);
                 $serie->update(['Completed' => true]);
             }

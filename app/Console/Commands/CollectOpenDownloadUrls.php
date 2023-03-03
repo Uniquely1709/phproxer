@@ -32,15 +32,15 @@ class CollectOpenDownloadUrls extends Command
     public function handle()
     {
         $opens = Episodes::where('Downloaded', false)
-                    ->where('DownloadUrl', null)
-                    ->where('Retries', '<=', 5)
-                    ->where('Published', true)
-                    ->get();
+            ->where('DownloadUrl', null)
+            ->where('Retries', '<=', 5)
+            ->where('Published', true)
+            ->get();
 
         $proxer = new ProxerVideoHelper();
         $urlBuilder = new UrlBuilder();
         $proxer->login();
-        foreach ($opens as $open){
+        foreach ($opens as $open) {
             dump($open->EpisodeID);
             dump($open->serie()->first()->ProxerId);
             $episodeId = $open->EpisodeID;
@@ -49,21 +49,20 @@ class CollectOpenDownloadUrls extends Command
             dump($url);
             $downloadUrl = $proxer->getDownloadUrl($url);
             dump($downloadUrl);
-            if ($downloadUrl=== null ) {
+            if (null=== $downloadUrl) {
                 $open->update([
                     'Retries' => DB::raw('Retries+1'),
                 ]);
-            }elseif (!$downloadUrl){
+            } elseif ( ! $downloadUrl) {
                 $open->update([
                     'Published' => false,
                 ]);
-            }else {
+            } else {
                 $open->update([
                     'DownloadUrl'=>$downloadUrl,
                     'Published'=>true,
                 ]);
             }
-
         }
 
         return 0;

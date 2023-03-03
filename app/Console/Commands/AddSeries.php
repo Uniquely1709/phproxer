@@ -18,7 +18,7 @@ class AddSeries extends Command
      *
      * @var string
      */
-    protected $signature = 'phproxer:addSeries {id}';
+    protected $signature = 'phproxer:addSeries {id} {season} {title?}';
 
     /**
      * The console command description.
@@ -35,6 +35,9 @@ class AddSeries extends Command
     public function handle()
     {
         $seriesId = $this->argument('id');
+        $title = $this->argument('title');
+        $season = $this->argument('season');
+
         $urlBuilder = new UrlBuilder();
         $client = new Client();
         $proxer = new ProxerHelper($seriesId);
@@ -60,22 +63,30 @@ class AddSeries extends Command
             'Published'=> true,
             'Completed' => false,
             'Episodes' => $episodes['lastEpisode'],
+            'Title' => $title,
+            'Season' => $season
         ]);
         dump($serie->id);
 
-        for ($i = 1; $i <= $episodes['lastEpisode']; $i++){
-            Episodes::create([
+        for ($i = 1; $i <= $episodes['lastEpisode']; $i++) {
+            $episode = Episodes::create([
                 'series_id' => $serie->id,
                 'EpisodeId' => $i,
+                'epNumber' => $i,
                 'Downloaded' => false,
                 'Published'=> false,
                 'Retries' => 0,
             ]);
+            if (1 === $i) {
+                $serie->update([
+                    'next_episode_id' => $episode->id,
+                ]);
+            }
         }
 
         $serie->Scraped = true;
         $serie->save();
-        Notification::send('',new SendTelegram('Added Series "'.$serie->TitleORG.'"'));
+        Notification::send('', new SendTelegram('Added Series "'.$serie->TitleORG.'"'));
 
         return 0;
     }

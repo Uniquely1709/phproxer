@@ -41,7 +41,7 @@ class Logger
      * @param string $message
      * @return void
      */
-    public static function error(string $message):void
+    public static function error(string $message): void
     {
         self::writeDB($message, "error");
         Log::error("Logger || ".$message);
@@ -52,7 +52,7 @@ class Logger
      * @param string $level
      * @return void
      */
-    private static function writeDB(string $message, string $level):void
+    private static function writeDB(string $message, string $level): void
     {
         LogEntry::create([
             'User'=>'TMP',

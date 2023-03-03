@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Episodes;
 use Illuminate\Console\Command;
+use Artisan;
 
 class ForceCheckSingleEpisode extends Command
 {
@@ -29,11 +29,11 @@ class ForceCheckSingleEpisode extends Command
     public function handle()
     {
         $episodeId = $this->argument('episodeId');
-        \Artisan::queue('phproxer:checkUnpublishedEpisodes', [
+        Artisan::queue('phproxer:checkUnpublishedEpisodes', [
             'episodeId' => $episodeId
         ]);
-        \Artisan::queue('phproxer:collectOpenDownloadUrls');
-        \Artisan::queue('phproxer:download');
+        Artisan::queue('phproxer:collectOpenDownloadUrls');
+        Artisan::queue('phproxer:download');
         return Command::SUCCESS;
     }
 }

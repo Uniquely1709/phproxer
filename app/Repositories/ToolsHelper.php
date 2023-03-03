@@ -7,28 +7,28 @@ use App\Models\Series;
 
 class ToolsHelper
 {
-    public static function pathBuilder(string $folder, string $filename):string
+    public static function pathBuilder(Series $series, string $filename): string
     {
-        dump($folder);
-        $series = Series::where('ProxerId', $folder)->first();
-        dump($series);
         return sprintf(
-            '%1$s%2$s%3$s%4$s',
+            '%1$s%2$s%3$s%4$s%5$s%6$s',
             '/anime/',
-            $series->TitleORG,
+            $series->Title,
+            '/',
+            'Season '.$series->Season,
             '/',
             $filename,
         );
     }
 
-    public static function nameBuilder(int $seriesId, Episodes $episode):string
+    public static function nameBuilder(int $seriesId, Episodes $episode): string
     {
         $series = Series::where('ProxerId', $seriesId)->first();
 
         return sprintf(
-            '%1$s%2$s%3$s%4$s',
-            $series->TitleORG,
-            ' - Episode ',
+            '%1$s%2$s%3$s%4$s%5$s',
+            $series->Title,
+            '-Season'.$series->Season,
+            '-Episode',
             $episode->EpisodeID,
             '.mp4'
         );

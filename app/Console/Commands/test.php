@@ -2,19 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Episodes;
-use App\Models\Series;
 use App\Notifications\SendTelegram;
-use App\Repositories\ProxerHelper;
-use App\Repositories\ProxerVideoHelper;
-use App\Repositories\UrlBuilder;
-use Goutte\Client;
 use Illuminate\Console\Command;
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
-use DMore\ChromeDriver\ChromeDriver;
 use Illuminate\Support\Facades\Notification;
-use NotificationChannels\Telegram\TelegramMessage;
 
 class test extends Command
 {

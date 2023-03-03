@@ -8,24 +8,17 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <form method="POST" action="{{url('add-series')}}" class="px-6">
-                    @csrf
-                    <label for="url" id="urlName">
-                        Add new Series via PROXER ID
-                    </label>
-                    <input name="url" id="url" type="string">
-                    <button
-                    type="submit"
-                    class="btn btn-default bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6"
-                    >Submit</button>
-                </form>
+                <livewire:add-series-form></livewire:add-series-form>
                 <table class="table-auto w-full text-sm border-collapse">
                     <thead>
                         <tr>
                             <th class="p-2"/>
 
                             <th class="text-left p-2">
-                                Original Title
+                                User Title
+                            </th>
+                            <th class="text-left p-2">
+                                Season
                             </th>
                             <th class="text-left p-2">
                                 English Title
@@ -56,7 +49,10 @@
                                 </a>
                             </td>
                             <td class="p-2">
-                                {{$serie->TitleORG}}
+                                {{$serie->Title}}
+                            </td>
+                            <td class="p-2">
+                                {{$serie->Season}}
                             </td>
                             <td class="p-2">
                                 {{$serie->TitleEN}}

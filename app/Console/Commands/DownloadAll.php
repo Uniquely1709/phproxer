@@ -31,9 +31,9 @@ class DownloadAll extends Command
         $episodes = Episodes::where('Downloaded', false)
             ->whereNot('DownloadUrl')
             ->get();
-        foreach ($episodes as $episode){
+        foreach ($episodes as $episode) {
             dump('queueing episodeid '.$episode->id);
-            $this->call('phproxer:downloadEpisode',[
+            $this->call('phproxer:downloadEpisode', [
                 'id'=>$episode->id,
                 '--queue' => 'downloads'
             ]);
