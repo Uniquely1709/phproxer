@@ -13,7 +13,7 @@ class Episodes extends Model
     protected $table = 'episodes';
 
     public $fillable = [
-        'series_id', 'EpisodeId', 'EpisodeName', 'Downloaded', 'Retries', 'res','Published', 'DownloadUrl',
+        'series_id', 'EpisodeId', 'EpisodeName', 'Downloaded', 'Retries', 'res','Published', 'DownloadUrl', 'Skipped', 'epNumber'
     ];
 
     public function serie()
@@ -24,5 +24,14 @@ class Episodes extends Model
     public function parent(): HasOne
     {
         return $this->hasOne(Series::class, 'id', 'series_id');
+    }
+
+    public function next()
+    {
+        $ep = self::getAttribute('epNumber')+ 1;
+        return self::query()
+            ->where('series_id', self::getAttribute('series_id'))
+            ->where('epNumber', $ep)
+            ->first();
     }
 }

@@ -69,13 +69,19 @@ class AddSeries extends Command
         dump($serie->id);
 
         for ($i = 1; $i <= $episodes['lastEpisode']; $i++) {
-            Episodes::create([
+            $episode = Episodes::create([
                 'series_id' => $serie->id,
                 'EpisodeId' => $i,
+                'epNumber' => $i,
                 'Downloaded' => false,
                 'Published'=> false,
                 'Retries' => 0,
             ]);
+            if (1 === $i) {
+                $serie->update([
+                    'next_episode_id' => $episode->id,
+                ]);
+            }
         }
 
         $serie->Scraped = true;

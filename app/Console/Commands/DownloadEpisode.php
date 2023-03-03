@@ -43,7 +43,7 @@ class DownloadEpisode extends Command
 
         $vid = file_get_contents($episode->DownloadUrl);
 
-        $state = Storage::disk(config('phproxer.proxer_storage'))->put(ToolsHelper::pathBuilder($series->ProxerId, $episodePath), $vid);
+        $state = Storage::disk(config('phproxer.proxer_storage'))->put(ToolsHelper::pathBuilder($series, $episodePath), $vid);
 
         if ( ! $state) {
             $episode->update(['Retries'=>$episode->Retries+1]);
