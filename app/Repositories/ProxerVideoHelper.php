@@ -52,6 +52,8 @@ class ProxerVideoHelper
     {
         $this->mink->getSession()->visit('https://proxer.me/login');
         $page = $this->mink->getSession()->getPage();
+
+
         $user = $page->findField('login_username');
 
         if (null !== $user) {
@@ -60,10 +62,19 @@ class ProxerVideoHelper
             $passwordField = 'login_password';
             $submitField = 'login_submit';
         } else {
-            //set new ids
+            //set blocked ids
             $userField = 'mod_login_username';
             $passwordField = 'mod_login_password';
             $submitField = 'mod_login_submit';
+
+            $this->mink->getSession()->wait(2000);
+            $this->mink->getSession()->visit('https://proxer.me/misc/captcha');
+            $this->mink->getSession()->wait(2000);
+
+            $this->checkCaptcha($this->mink->getSession()->getPage(), 'https://proxer.me/misc/captcha');
+
+            $this->mink->getSession()->visit('https://proxer.me/login');
+            $page = $this->mink->getSession()->getPage();
         }
 
         $user = $page->findField($userField);
