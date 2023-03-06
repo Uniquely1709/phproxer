@@ -52,11 +52,11 @@ class ProxerVideoHelper
     {
         $this->mink->getSession()->visit('https://proxer.me/login');
         $page = $this->mink->getSession()->getPage();
-        $user = $page->findField('login_username');
-        $password = $page->findField('login_password');
+        $user = $page->findField('mod_login_username');
+        $password = $page->findField('mod_login_password');
         $user->setValue($this->username);
         $password->setValue($this->password);
-        $page->findById('login_submit')->click();
+        $page->findById('mod_login_submit')->click();
     }
 
     public function getNumberOfEpisodes(int $seriesId): int
