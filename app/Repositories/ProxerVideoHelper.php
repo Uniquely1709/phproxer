@@ -54,7 +54,7 @@ class ProxerVideoHelper
         $page = $this->mink->getSession()->getPage();
         $user = $page->findField('login_username');
 
-        if ($user->isVisible()) {
+        if (null === $user) {
             //keep old ids
             $userField = 'login_username';
             $passwordField = 'login_password';
