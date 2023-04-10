@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Episodes;
 use App\Models\Series;
+use Storage;
 
 class ToolsHelper
 {
@@ -50,5 +51,24 @@ class ToolsHelper
             $episodeNumber,
             '.mp4'
         );
+    }
+
+    public static function storeCookies(string $joomla, string $e0, string $tmode, string $loggedIn, string $joomlaState): bool
+    {
+        $cookies = [
+            'joomla'=>$joomla,
+            'e0'=>$e0,
+            'tmode'=>$tmode,
+            'loggedIn'=>$loggedIn,
+            'joomlaState'=>$joomlaState,
+        ];
+
+        return Storage::disk('local')->put('cookies.json', json_encode($cookies));
+    }
+
+    public static function getCookies(): array
+    {
+        $file = Storage::disk('local')->get('cookies.json');
+        return json_decode($file, true);
     }
 }

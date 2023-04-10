@@ -48,40 +48,79 @@ class ProxerVideoHelper
         $this->captchaKey = $captchaKey;
     }
 
+    public function testStoredCookies(): bool
+    {
+        $this->mink->getSession()->visit('https://proxer.me/');
+
+        $cookieStorage = ToolsHelper::getCookies();
+
+        $this->mink->getSession()->setCookie('joomla_remember_me_58fd36c31c6c921ce61dad18edac7294', $cookieStorage['joomla']);
+        $this->mink->getSession()->setCookie('e0da4f913f5f05ed7a3f6dc5f0488c7b', $cookieStorage['e0']);
+        $this->mink->getSession()->setCookie('tmode', $cookieStorage['tmode']);
+        $this->mink->getSession()->setCookie('proxer_loggedin', $cookieStorage['loggedIn']);
+        $this->mink->getSession()->setCookie('joomla_user_state', $cookieStorage['joomlaState']);
+        $this->mink->getSession()->visit('https://proxer.me/user#top');
+        $page = $this->mink->getSession()->getPage();
+        sleep(3);
+        //validate that cookies worked
+        if ($page->find('css', '#main > div > h3')) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function storeCookies(): void
+    {
+        $joomla = $this->mink->getSession()->getCookie('joomla_remember_me_58fd36c31c6c921ce61dad18edac7294');
+        $e0 = $this->mink->getSession()->getCookie('e0da4f913f5f05ed7a3f6dc5f0488c7b');
+        $tmode = $this->mink->getSession()->getCookie('tmode');
+        $loggedIn = $this->mink->getSession()->getCookie('proxer_loggedin');
+        $joomlaState = $this->mink->getSession()->getCookie('joomla_user_state');
+
+        ToolsHelper::storeCookies($joomla, $e0, $tmode, $loggedIn, $joomlaState);
+    }
+
     public function login(): void
     {
-        $this->mink->getSession()->visit('https://proxer.me/login');
-        $page = $this->mink->getSession()->getPage();
-
-
-        $user = $page->findField('login_username');
-
-        if (null !== $user) {
-            //keep old ids
-            $userField = 'login_username';
-            $passwordField = 'login_password';
-            $submitField = 'login_submit';
-        } else {
-            //set blocked ids
-            $userField = 'mod_login_username';
-            $passwordField = 'mod_login_password';
-            $submitField = 'mod_login_submit';
-
-            $this->mink->getSession()->wait(2000);
-            $this->mink->getSession()->visit('https://proxer.me/misc/captcha');
-            $this->mink->getSession()->wait(2000);
-
-            $this->checkCaptcha($this->mink->getSession()->getPage(), 'https://proxer.me/misc/captcha');
-
+        //check first if old cookies are still valid
+        if( ! $this->testStoredCookies()) {
             $this->mink->getSession()->visit('https://proxer.me/login');
             $page = $this->mink->getSession()->getPage();
-        }
 
-        $user = $page->findField($userField);
-        $password = $page->findField($passwordField);
-        $user->setValue($this->username);
-        $password->setValue($this->password);
-        $page->findById($submitField)->click();
+
+            $user = $page->findField('login_username');
+
+            if (null !== $user) {
+                //keep old ids
+                $userField = 'login_username';
+                $passwordField = 'login_password';
+                $submitField = 'login_submit';
+            } else {
+                //set blocked ids
+                $userField = 'mod_login_username';
+                $passwordField = 'mod_login_password';
+                $submitField = 'mod_login_submit';
+
+                $this->mink->getSession()->wait(2000);
+                $this->mink->getSession()->visit('https://proxer.me/misc/captcha');
+                $this->mink->getSession()->wait(2000);
+
+                $this->checkCaptcha($this->mink->getSession()->getPage(), 'https://proxer.me/misc/captcha');
+
+                $this->mink->getSession()->visit('https://proxer.me/login');
+                $page = $this->mink->getSession()->getPage();
+            }
+
+            $user = $page->findField($userField);
+            $password = $page->findField($passwordField);
+            $user->setValue($this->username);
+            $password->setValue($this->password);
+            $page->findById($submitField)->click();
+
+            sleep(3);
+            $this->storeCookies();
+        }
     }
 
     public function getNumberOfEpisodes(int $seriesId): int
