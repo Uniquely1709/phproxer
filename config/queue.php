@@ -14,7 +14,7 @@ return [
     */
 
     'default' => env('QUEUE_CONNECTION', 'database'),
-    'downloads' => env('DOWNLOAD_QUEUE_CONNECTION', 'sync'),
+    'downloads' => env('DOWNLOAD_QUEUE_CONNECTION', 'database_downloads'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,6 +39,14 @@ return [
             'driver' => 'database',
             'table' => 'jobs',
             'queue' => 'default',
+            'retry_after' => 90,
+            'after_commit' => false,
+        ],
+
+        'database_downloads' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'downloads',
             'retry_after' => 90,
             'after_commit' => false,
         ],
