@@ -14,7 +14,7 @@ return [
     */
 
     'default' => env('QUEUE_CONNECTION', 'database'),
-    'downloads' => env('QUEUE_CONNECTION', 'sync'),
+    'downloads' => env('DOWNLOAD_QUEUE_CONNECTION', 'sync'),
 
     /*
     |--------------------------------------------------------------------------
