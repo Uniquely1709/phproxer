@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\DownloadEpisode;
 use App\Models\Episodes;
+use App\Repositories\Logger;
 use Illuminate\Console\Command;
 
 class DownloadAll extends Command
@@ -33,7 +34,7 @@ class DownloadAll extends Command
             ->whereNot('DownloadUrl')
             ->get();
         foreach ($episodes as $episode) {
-            dump('queueing episodeid '.$episode->id);
+            Logger::info('queueing episodeid '.$episode->id);
             DownloadEpisode::dispatch($episode);
         }
         return 0;

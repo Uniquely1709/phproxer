@@ -31,6 +31,7 @@ class DownloadEpisode implements ShouldQueue
     public function __construct(Episodes $episode)
     {
         $this->onQueue('downloads');
+        $this->onConnection('database_downloads');
         $this->episode = $episode;
     }
 
