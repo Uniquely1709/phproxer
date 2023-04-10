@@ -7,7 +7,6 @@ use App\Models\Series;
 use App\Notifications\SendTelegram;
 use App\Repositories\ProxerVideoHelper;
 use App\Repositories\UrlBuilder;
-use Goutte\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
 
@@ -39,18 +38,18 @@ class AddSeries extends Command
         $season = $this->argument('season');
 
         $urlBuilder = new UrlBuilder();
-        $client = new Client();
+
         $proxer = new ProxerVideoHelper();
 
         dump('Adding '.$seriesId.' to phproxer..');
 
         $proxer->login();
         $episodes = $proxer->getNumberOfEpisodes($seriesId);
-//        $originalTitle = $proxer->getOriginalTitle();
+        //        $originalTitle = $proxer->getOriginalTitle();
 
         //TODO add EN and GER Title
-//        $enTitle = $proxer->getEnTitle();
-//        dd($enTitle);
+        //        $enTitle = $proxer->getEnTitle();
+        //        dd($enTitle);
 
         $serie = Series::create([
             'TitleEN' => '',
