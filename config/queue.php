@@ -45,7 +45,7 @@ return [
 
         'database_downloads' => [
             'driver' => 'database',
-            'table' => 'jobs',
+            'table' => 'download_jobs',
             'queue' => 'downloads',
             'retry_after' => 90,
             'after_commit' => false,
