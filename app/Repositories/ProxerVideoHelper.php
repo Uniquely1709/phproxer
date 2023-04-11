@@ -57,11 +57,11 @@ class ProxerVideoHelper
         if (empty($cookieStorage)) {
             return false;
         }
-        $this->mink->getSession()->setCookie('joomla_remember_me_58fd36c31c6c921ce61dad18edac7294', $cookieStorage['joomla']);
-        $this->mink->getSession()->setCookie('e0da4f913f5f05ed7a3f6dc5f0488c7b', $cookieStorage['e0']);
-        $this->mink->getSession()->setCookie('tmode', $cookieStorage['tmode']);
-        $this->mink->getSession()->setCookie('proxer_loggedin', $cookieStorage['loggedIn']);
-        $this->mink->getSession()->setCookie('joomla_user_state', $cookieStorage['joomlaState']);
+        $keys = array_keys($cookieStorage);
+        foreach ($keys as $key) {
+            $this->mink->getSession()->setCookie($key, $cookieStorage[$key]);
+        }
+
         $this->mink->getSession()->visit('https://proxer.me/user#top');
         $page = $this->mink->getSession()->getPage();
         sleep(3);
@@ -75,13 +75,13 @@ class ProxerVideoHelper
 
     public function storeCookies(): void
     {
-        $joomla = $this->mink->getSession()->getCookie('joomla_remember_me_58fd36c31c6c921ce61dad18edac7294');
-        $e0 = $this->mink->getSession()->getCookie('e0da4f913f5f05ed7a3f6dc5f0488c7b');
-        $tmode = $this->mink->getSession()->getCookie('tmode');
-        $loggedIn = $this->mink->getSession()->getCookie('proxer_loggedin');
-        $joomlaState = $this->mink->getSession()->getCookie('joomla_user_state');
+        $driver = $this->mink->getSession()->getDriver();
+        $cookies = [];
+        foreach ($driver->getCookies() as $cookie) {
+            $cookies[$cookie['name']] = $cookie['value'];
+        }
 
-        ToolsHelper::storeCookies($joomla, $e0, $tmode, $loggedIn, $joomlaState);
+        ToolsHelper::storeCookies($cookies);
     }
 
     public function login(): void

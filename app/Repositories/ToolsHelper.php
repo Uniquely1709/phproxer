@@ -53,16 +53,8 @@ class ToolsHelper
         );
     }
 
-    public static function storeCookies(string $joomla, string $e0, string $tmode, string $loggedIn, string $joomlaState): bool
+    public static function storeCookies(array $cookies): bool
     {
-        $cookies = [
-            'joomla'=>$joomla,
-            'e0'=>$e0,
-            'tmode'=>$tmode,
-            'loggedIn'=>$loggedIn,
-            'joomlaState'=>$joomlaState,
-        ];
-
         return Storage::disk('local')->put('cookies.json', json_encode($cookies));
     }
 
