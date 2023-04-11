@@ -54,6 +54,9 @@ class ProxerVideoHelper
 
         $cookieStorage = ToolsHelper::getCookies();
 
+        if (empty($cookieStorage)) {
+            return false;
+        }
         $this->mink->getSession()->setCookie('joomla_remember_me_58fd36c31c6c921ce61dad18edac7294', $cookieStorage['joomla']);
         $this->mink->getSession()->setCookie('e0da4f913f5f05ed7a3f6dc5f0488c7b', $cookieStorage['e0']);
         $this->mink->getSession()->setCookie('tmode', $cookieStorage['tmode']);
