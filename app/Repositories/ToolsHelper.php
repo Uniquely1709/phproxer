@@ -69,6 +69,9 @@ class ToolsHelper
     public static function getCookies(): ?array
     {
         $file = Storage::disk('local')->get('cookies.json');
+        if (empty($file)) {
+            return null;
+        }
         return json_decode($file, true);
     }
 }
